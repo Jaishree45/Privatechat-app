@@ -6,13 +6,28 @@
 </head>
 <body>
 
-<h2>Chat Room</h2>
+  <!-- TOP BAR -->
+  <div class="top-bar" id="adminBar" style="display:none;">
+    <button class="tab-btn" onclick="goRequests()">📥 Request Panel</button>
+  </div>
 
-<div id="messages"></div>
+  <!-- CHAT CONTAINER -->
+  <div class="container">
+    <h2>Chat Room 💬</h2>
 
-<input id="msg" placeholder="Type message">
-<button onclick="send()">Send</button>
+    <div id="messages"></div>
 
-<script type="module" src="chat.js"></script>
+    <input id="msg" placeholder="Type message">
+    <button onclick="send()">Send</button>
+  </div>
+
+  <script type="module" src="chat.js"></script>
+
+  <script>
+    function goRequests() {
+      location.href = "admin.html";
+    }
+  </script>
+
 </body>
 </html>
