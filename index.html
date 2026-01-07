@@ -4,19 +4,22 @@
   <title>Login</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="center">
 
-<h2>Login</h2>
+  <div class="card">
+    <h2>Login 🔑</h2>
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
 
-<p>
-  New user?
-  <a href="request.html">Request Access</a>
-</p>
+    <button onclick="login()">Login</button>
 
-<script type="module" src="auth.js"></script>
+    <p class="link-text">
+      New user?
+      <a href="request.html">Request Access</a>
+    </p>
+  </div>
+
+  <script type="module" src="auth.js"></script>
 </body>
 </html>
