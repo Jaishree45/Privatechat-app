@@ -10,32 +10,56 @@ import {
 
 // LOGIN
 window.login = async function () {
-  const email = email.value;
-  const password = password.value;
+  const emailInput = document.getElementById("email").value;
+  const passwordInput = document.getElementById("password").value;
 
-  const userCred = await signInWithEmailAndPassword(auth, email, password);
-  const uid = userCred.user.uid;
+  try {
+    const userCred = await signInWithEmailAndPassword(
+      auth,
+      emailInput,
+      passwordInput
+    );
 
-  const snap = await get(ref(db, "users/" + uid));
-  const role = snap.val().role;
+    const uid = userCred.user.uid;
+    const snap = await get(ref(db, "users/" + uid));
 
-  if (role === "admin") location.href = "admin.html";
-  else if (role === "approved") location.href = "chat.html";
-  else alert("Waiting for approval ⏳");
+    if (!snap.exists()) {
+      alert("No role assigned ❌");
+      return;
+    }
+
+    const role = snap.val().role;
+
+    if (role === "admin") location.href = "admin.html";
+    else if (role === "approved") location.href = "chat.html";
+    else alert("Waiting for admin approval ⏳");
+
+  } catch (err) {
+    alert(err.message);
+  }
 };
 
 // REQUEST ACCESS
 window.requestAccess = async function () {
-  const userCred = await createUserWithEmailAndPassword(
-    auth,
-    email.value,
-    password.value
-  );
+  const nameInput = document.getElementById("name").value;
+  const emailInput = document.getElementById("email").value;
+  const passwordInput = document.getElementById("password").value;
 
-  await set(ref(db, "users/" + userCred.user.uid), {
-    name: name.value,
-    role: "pending"
-  });
+  try {
+    const userCred = await createUserWithEmailAndPassword(
+      auth,
+      emailInput,
+      passwordInput
+    );
 
-  alert("Request sent ⏳");
+    await set(ref(db, "users/" + userCred.user.uid), {
+      name: nameInput,
+      role: "pending"
+    });
+
+    alert("Request sent successfully ⏳");
+
+  } catch (err) {
+    alert(err.message);
+  }
 };
