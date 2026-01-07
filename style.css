@@ -125,3 +125,7 @@ button:hover {
   margin: 6px 0;
   width: fit-content;
 }
+#messages strong {
+  color: #4338ca;
+}
+
