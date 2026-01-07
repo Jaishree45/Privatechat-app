@@ -58,8 +58,10 @@ window.requestAccess = async function () {
     });
 
     alert("Request sent successfully ⏳");
+location.href = "index.html";
 
   } catch (err) {
     alert(err.message);
   }
 };
+
