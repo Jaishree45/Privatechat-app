@@ -6,10 +6,25 @@
 </head>
 <body>
 
-<h2>Pending Requests</h2>
-<ul id="list"></ul>
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button class="tab-btn" onclick="goChat()">💬 Chat Panel</button>
+    <button class="tab-btn active">📥 Requests</button>
+  </div>
 
-<script type="module" src="admin.js"></script>
+  <!-- CONTENT -->
+  <div class="container">
+    <h2>Pending Requests</h2>
+    <ul id="list"></ul>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+
+  <script>
+    function goChat() {
+      location.href = "chat.html";
+    }
+  </script>
+
 </body>
 </html>
-
