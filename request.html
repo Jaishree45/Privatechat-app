@@ -4,15 +4,23 @@
   <title>Request Access</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="center">
 
-<h2>Request Access</h2>
+  <div class="card">
+    <h2>Request Access 🔐</h2>
 
-<input id="name" placeholder="Your Name">
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button onclick="requestAccess()">Request</button>
+    <input id="name" placeholder="Your Name">
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
 
-<script type="module" src="auth.js"></script>
+    <button onclick="requestAccess()">Send Request</button>
+
+    <p class="link-text">
+      Already requested?
+      <a href="index.html">Go to Login</a>
+    </p>
+  </div>
+
+  <script type="module" src="auth.js"></script>
 </body>
 </html>
