@@ -1,54 +1,59 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getDatabase, ref, push, onChildAdded, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { auth, db } from "./firebase.js";
+import {
+  ref,
+  push,
+  onChildAdded,
+  get
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-const firebaseConfig = {
-  // your config
-};
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getDatabase();
+const messagesBox = document.getElementById("messages");
+const adminBar = document.getElementById("adminBar");
+const msgInput = document.getElementById("msg");
 
 let userName = "";
 
-// 🔹 Get user name from DB
-auth.onAuthStateChanged(async (user) => {
+// 🔐 AUTH + ROLE CHECK
+onAuthStateChanged(auth, async (user) => {
   if (!user) {
     location.href = "index.html";
     return;
   }
 
-  const snapshot = await get(ref(db, "users/" + user.uid));
-  userName = snapshot.val().name;
+  const snap = await get(ref(db, "users/" + user.uid));
+  if (!snap.exists()) return;
 
-  // 🔹 Show admin button if admin
-  if (user.email === "admin@gmail.com") {
-    document.getElementById("adminBar").style.display = "flex";
+  userName = snap.val().name;
+
+  if (snap.val().role === "admin") {
+    adminBar.style.display = "flex"; // ✅ SHOW REQUEST BUTTON
   }
 });
 
-// 🔹 Send message
-window.send = () => {
-  const msg = document.getElementById("msg").value;
-
-  if (msg === "") return;
-
-  push(ref(db, "messages"), {
-    text: msg,
-    sender: userName,
-    uid: auth.currentUser.uid
-  });
-
-  document.getElementById("msg").value = "";
-};
-
-// 🔹 Receive messages
-onChildAdded(ref(db, "messages"), (snapshot) => {
+// 💬 LOAD CHATS (USE EXISTING PATH)
+onChildAdded(ref(db, "chats"), (snapshot) => {
   const data = snapshot.val();
 
   const p = document.createElement("p");
   p.innerHTML = `<strong>${data.sender}:</strong> ${data.text}`;
 
-  document.getElementById("messages").appendChild(p);
+  messagesBox.appendChild(p);
+  messagesBox.scrollTop = messagesBox.scrollHeight;
 });
+
+// ✉️ SEND MESSAGE
+window.send = () => {
+  if (!msgInput.value.trim()) return;
+
+  push(ref(db, "chats"), {
+    text: msgInput.value,
+    sender: userName,
+    uid: auth.currentUser.uid,
+    time: Date.now()
+  });
+
+  msgInput.value = "";
+};
